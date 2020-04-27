@@ -12,6 +12,12 @@ body {
   width: 320px;
   margin: 0 auto;
   padding: 20px;
+  text-align: center;
   vertical-align: auto;
   background-color: plum;
+}
+
+#start-stop {
+  display: inline-block;
+  padding: 10px 15px;
 }

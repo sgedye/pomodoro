@@ -15,11 +15,11 @@ const Container = styled.div`
   }
 `
 
-function Countdown() {
+function Countdown(props) {
   return (
     <Container>
-      <div id="timing">Session</div>
-      <div id="time-left">25:00</div>
+      <div id="timer-label">{props.type}</div>
+      <div id="time-left">25:00</div> {/* props.timeRemaining || make a time object */}
     </Container>
   )
 }
