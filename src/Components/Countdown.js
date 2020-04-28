@@ -16,10 +16,12 @@ const Container = styled.div`
 `
 
 function Countdown(props) {
+  let minutes = props.timeRemaining[0].toString().padStart(2, "0")
+  let seconds = props.timeRemaining[1].toString().padStart(2, "0")
   return (
     <Container>
       <div id="timer-label">{props.type}</div>
-      <div id="time-left">25:00</div> {/* props.timeRemaining || make a time object */}
+      <div id="time-left">{`${minutes}:${seconds}`}</div>
     </Container>
   )
 }
