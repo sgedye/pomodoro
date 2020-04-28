@@ -17,7 +17,7 @@ body {
   background-color: plum;
 }
 
-#start-stop {
+#start_stop {
   display: inline-block;
   padding: 10px 15px;
 }

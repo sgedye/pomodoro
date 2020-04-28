@@ -18,10 +18,12 @@ const Footer = styled.p`
 function App() {
   const [ type, setType] = useState('Session')   /* use setType when timer (timeRemaining === zero) */
   const [ breakLength, setBreakLength ] = useState(5)
-  const [ sessionLength, setSessionLength ] = useState(25)
-  const [ timeRemaining, setTimeRemaining ] = useState({minutes:25, seconds:0})
+  const [ sessionLength, setSessionLength ] = useState(1)
+  const [ interv, setInterv ] = useState()
+  const [ timeRemaining, setTimeRemaining ] = useState({minutes:1, seconds:0})
   const [ isPlaying, setIsPlaying] = useState(false)
 
+  // Setting the timer
   const changeTime = id => {
     const [type, change] = id.split('-')
     if (type === 'break' && change === 'increment' && breakLength < 60) {
@@ -38,121 +40,67 @@ function App() {
       setTimer(sessionLength - 1)
     }
   }
-
   const setTimer = setMinutes => setTimeRemaining({minutes: setMinutes, seconds: 0})
-
-  const [interv, setInterv] = useState()
 
   let updatedMinutes = timeRemaining.minutes, updatedSeconds = timeRemaining.seconds
 
-  const resumeTimer = () => { //Resume / Start
-    console.log('resumeTimer')
-    runTimer()
-    setInterv(setInterval(runTimer, 1000))
+  const startTimer = () => {
+    setIsPlaying(true)
+    run()
+    console.log(isPlaying, '...')
+    setInterv(setInterval(run, 100))
   }
-  const runTimer = () => {
-    console.log("runTimer")
-    if (updatedSeconds <= 0) {
-      if (updatedMinutes <= 0) {
-        //times up
-      } else {
-        updatedMinutes--
-        updatedSeconds += 60
-      }
-    }
-    updatedSeconds--
-    return setTimeRemaining({
-      minutes: updatedMinutes,
-      seconds: updatedSeconds,
-    })
-  }
-  const pauseTimer = () => {
-    console.log("pauseTimer")
-    clearInterval(interv)
-  }
-  const resetTimer = () => {
-    console.log("resetTimer")
-    clearInterval(interv)
-    setTimeRemaining([25, 0])
-    setIsPlaying(false)
-  }
-  const playPause = (action) => {
-    console.log(action)
-    action === 'play' ? resumeTimer() : pauseTimer()
-    setIsPlaying(!isPlaying)
-  }
-  // const runTimer = (action) => {
-  //   console.log(action)
-  //   let countdown
-  //   let time = timeRemaining[0] * 60 * 1000 + timeRemaining[1] * 1000
-  //   if (action === 'play') {
-  //     countdown = setInterval(function() {
-  //       time -= 1000
-  //       let minutes = Math.floor(time / (60 * 1000))
-  //       let seconds = Math.floor(time / 1000 - minutes * 60)
-  //       setTimeRemaining([minutes, seconds])
-  //       document.getElementById(
-  //         "time-left"
-  //       ).innerHTML = `${minutes
-  //         .toString()
-  //         .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
-
-  //       if (time <= 0) {
-  //         // play sound, etc.
-  //         clearInterval(countdown)
-  //         action = 'pause'
-  //       }
-  //     }, 1000)
-  //   } else {
-  //     clearInterval(countdown)
-  //     action = 'pause'
-  //   }
-  // }
-
-
-/*
-  // Simplified TIMER
-  const runTimer = (action) => {
-    let time = timeRemaining[0] * 60 * 1000 + timeRemaining[1] * 1000
- 
-    if (action === "play") {
-      t = setInterval(() => {
-        if (action === 'play') {
-          time -= 1000
-          console.log(time)
-          if (time <= 0) {
-            console.log("time's up!")
-            action = 'pause'
-          }
+  const run = () => {
+    //if (isPlaying) {
+      console.log("runTimer")
+      if (updatedSeconds === 0) {
+        if (updatedMinutes === 0) {
+          setIsPlaying(false)
+          clearInterval(interv)
+          resetTimer()
+          // return null
+          // setInterv(clearInterval(interv))
+          // setIsPlaying(false)
+          // soundAlarm()
+          // setTimeout(switchTimer, 5000)
         } else {
-          clearInterval(incrementer)
-          incrementer = -1
+          updatedMinutes--
+          updatedSeconds += 60
         }
-      }, 1000)
-    }
+      }
+      if (updatedSeconds > 0) {
+        updatedSeconds--
+      }
+      return setTimeRemaining({ minutes: updatedMinutes, seconds: updatedSeconds })
+    //}
   }
-
-
-  const playPause = action => {
-    setIsPlaying(!isPlaying)
-
-    console.log("isPlay", isPlaying, action)
-    runTimer(action)
-    
-    
-
-
-    console.log("Is playing? ", isPlaying)
-    console.log(timeRemaining)
+  const soundAlarm = () => {
+    const alarm = new Audio("http://soundbible.com/mp3/Temple%20Bell-SoundBible.com-756181215.mp3")
+    alarm.play()
   }
+  const switchTimer = () => {
+    type === "Session" ? setType("Break") : setType("Session")
+    let switchMinutes = type === "Session" ? sessionLength : breakLength
+    setTimeRemaining({ minutes: switchMinutes, seconds: 0 })
+    console.log('hi')
 
+  }
+  const stopTimer = () => {
+    console.log("pauseTimer")
+    setIsPlaying(false)
+    clearInterval(interv)
+  }
   const resetTimer = () => {
     console.log("resetTimer")
-    setTimeRemaining([25,0])
+    clearInterval(interv)
+    let resetMinutes = (type === 'Session') ? sessionLength : breakLength
+    setTimeRemaining({minutes: resetMinutes, seconds: 0})
     setIsPlaying(false)
-    runTimer('pause')
+    console.log(resetMinutes, timeRemaining, isPlaying)
   }
-*/
+  const playPause = () => {
+    isPlaying ? stopTimer() : startTimer()
+  }
 
   return (
     <div id="pomodoro">
