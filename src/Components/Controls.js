@@ -5,10 +5,10 @@ import { FaPlay, FaPause, FaRedoAlt } from 'react-icons/fa'
 
 
 function Controls(props) {
-  console.log(props)
+  let playPause = props.isPlaying ? 'pause' : 'play'
   return (
     <IconContext.Provider value={{ color: "blue", size: "1.2rem" }}>
-      <div id="start-stop" onClick={() => props.handlePlayPause()}>
+      <div id="start-stop" onClick={ () => props.handlePlayPause(playPause) }>
         <FaPlay />
         <FaPause />
       </div>

@@ -19,7 +19,7 @@ function App() {
   const [ type, setType] = useState('Session')   /* use setType when timer (timeRemaining === zero) */
   const [ breakLength, setBreakLength ] = useState(5)
   const [ sessionLength, setSessionLength ] = useState(25)
-  const [ timeRemaining, setTimeRemaining ] = useState([25,0])
+  const [ timeRemaining, setTimeRemaining ] = useState({minutes:25, seconds:0})
   const [ isPlaying, setIsPlaying] = useState(false)
 
   const changeTime = id => {
@@ -39,33 +39,109 @@ function App() {
     }
   }
 
-  const setTimer = setMinutes => setTimeRemaining([setMinutes,0])
+  const setTimer = setMinutes => setTimeRemaining({minutes: setMinutes, seconds: 0})
 
+  const [interv, setInterv] = useState()
+
+  let updatedMinutes = timeRemaining.minutes, updatedSeconds = timeRemaining.seconds
+
+  const resumeTimer = () => { //Resume / Start
+    console.log('resumeTimer')
+    runTimer()
+    setInterv(setInterval(runTimer, 1000))
+  }
   const runTimer = () => {
-    let time = timeRemaining[0] * 60 * 1000 + timeRemaining[1] * 1000
-    let countdown = setInterval(() => {
-      time -= 1000
-      let minutes = Math.floor(time / (60 * 1000))
-      let seconds = Math.floor((time / 1000) - (minutes * 60))
-      setTimeRemaining([minutes,seconds])
-      document.getElementById(
-        "time-left"
-      ).innerHTML = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
-
-      if (time <= 0) {
-        // play sound, etc.
-        clearInterval(countdown)
+    console.log("runTimer")
+    if (updatedSeconds <= 0) {
+      if (updatedMinutes <= 0) {
+        //times up
+      } else {
+        updatedMinutes--
+        updatedSeconds += 60
       }
-    }, 1000)
+    }
+    updatedSeconds--
+    return setTimeRemaining({
+      minutes: updatedMinutes,
+      seconds: updatedSeconds,
+    })
   }
-
   const pauseTimer = () => {
-    console.log(timeRemaining)
+    console.log("pauseTimer")
+    clearInterval(interv)
+  }
+  const resetTimer = () => {
+    console.log("resetTimer")
+    clearInterval(interv)
+    setTimeRemaining([25, 0])
+    setIsPlaying(false)
+  }
+  const playPause = (action) => {
+    console.log(action)
+    action === 'play' ? resumeTimer() : pauseTimer()
+    setIsPlaying(!isPlaying)
+  }
+  // const runTimer = (action) => {
+  //   console.log(action)
+  //   let countdown
+  //   let time = timeRemaining[0] * 60 * 1000 + timeRemaining[1] * 1000
+  //   if (action === 'play') {
+  //     countdown = setInterval(function() {
+  //       time -= 1000
+  //       let minutes = Math.floor(time / (60 * 1000))
+  //       let seconds = Math.floor(time / 1000 - minutes * 60)
+  //       setTimeRemaining([minutes, seconds])
+  //       document.getElementById(
+  //         "time-left"
+  //       ).innerHTML = `${minutes
+  //         .toString()
+  //         .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
+
+  //       if (time <= 0) {
+  //         // play sound, etc.
+  //         clearInterval(countdown)
+  //         action = 'pause'
+  //       }
+  //     }, 1000)
+  //   } else {
+  //     clearInterval(countdown)
+  //     action = 'pause'
+  //   }
+  // }
+
+
+/*
+  // Simplified TIMER
+  const runTimer = (action) => {
+    let time = timeRemaining[0] * 60 * 1000 + timeRemaining[1] * 1000
+ 
+    if (action === "play") {
+      t = setInterval(() => {
+        if (action === 'play') {
+          time -= 1000
+          console.log(time)
+          if (time <= 0) {
+            console.log("time's up!")
+            action = 'pause'
+          }
+        } else {
+          clearInterval(incrementer)
+          incrementer = -1
+        }
+      }, 1000)
+    }
   }
 
-  const playPause = () => {
-    isPlaying ? pauseTimer() : runTimer()
+
+  const playPause = action => {
     setIsPlaying(!isPlaying)
+
+    console.log("isPlay", isPlaying, action)
+    runTimer(action)
+    
+    
+
+
     console.log("Is playing? ", isPlaying)
     console.log(timeRemaining)
   }
@@ -74,14 +150,16 @@ function App() {
     console.log("resetTimer")
     setTimeRemaining([25,0])
     setIsPlaying(false)
+    runTimer('pause')
   }
+*/
 
   return (
     <div id="pomodoro">
       <Title>Pomodoro</Title>
       <Timers breakLength={breakLength} sessionLength={sessionLength} handleChange={changeTime} />
       <Countdown type={type} timeRemaining={timeRemaining} />
-      <Controls handleReset={resetTimer} handlePlayPause={playPause} />
+      <Controls isPlaying={isPlaying} handleReset={resetTimer} handlePlayPause={playPause} />
       <Footer>Create by Shaunicles</Footer>
     </div>
   )
