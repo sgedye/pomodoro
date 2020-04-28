@@ -47,8 +47,7 @@ function App() {
   const startTimer = () => {
     setIsPlaying(true)
     run()
-    console.log(isPlaying, '...')
-    setInterv(setInterval(run, 100))
+    //setInterv(setInterval(run, 100))
   }
   const run = () => {
     //if (isPlaying) {
