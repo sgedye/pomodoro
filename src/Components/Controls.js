@@ -11,7 +11,7 @@ function Controls(props) {
         <FaPlay />
         <FaPause />
       </div>
-      <FaRedoAlt id="reset" onClick = {() => props.handleReset()} />
+      <FaRedoAlt id="reset" onClick = {() => props.handleRestart()} />
     </IconContext.Provider>
   )
 }

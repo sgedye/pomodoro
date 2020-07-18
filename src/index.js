@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
+import { useTimer } from 'react-timer-hook'
+import styled from 'styled-components'
 
 import './index.css'
 
 import Timers from './Components/Timers'
-import Countdown from './Components/Countdown'
+// import Countdown from './Components/Countdown'
 import Controls from './Components/Controls'
 
 
@@ -14,7 +16,6 @@ function App() {
   const [ sessionLength, setSessionLength ] = useState(1)
   const [ interv, setInterv ] = useState()
   const [ timeRemaining, setTimeRemaining ] = useState({minutes:1, seconds:0})
-  const [ isPlaying, setIsPlaying] = useState(false)
 
   // Setting the timer
   const changeTime = id => {
@@ -34,92 +35,69 @@ function App() {
       setTimer(sessionLength - 1)
     }
   }
-  const setTimer = setMinutes => setTimeRemaining({minutes: setMinutes, seconds: 0})
+  const setTimer = setMinutes => {
+    setTimeRemaining({minutes: setMinutes, seconds: 0})
+  }
 
-  const startTimer = () => {
-    setIsPlaying(true)
-    console.log("startTimer -- isPlaying: ", isPlaying)
-    // run()
-    setInterv(setInterval(run, 100))
+
+  let expiryTimestamp = new Date()
+  expiryTimestamp.setMinutes(expiryTimestamp.getMinutes() + timeRemaining.minutes)
+  expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 1)
+  
+  const {
+    seconds, minutes, isRunning, start, pause, resume, restart
+  } = useTimer({ expiryTimestamp, onExpire: () => expired() })
+
+  console.log('isRunning: ', isRunning);  
+  
+  const playPause = () => isRunning ? pause() : resume();
+  
+  const expired = () => {
+    console.log("expired", type)
+    type === "Session" ? setType("Break") : setType("Session")
+    console.log(type, 'type')
+    let switchMinutes = type === "Session" ? sessionLength : breakLength
+    setTimeRemaining({ minutes: switchMinutes, seconds: 0 })
   }
-  const run = () => {
-    // if (isPlaying) {
-      let updatedMinutes = timeRemaining.minutes
-      let updatedSeconds = timeRemaining.seconds
-      console.log("runTimer")
-      if (updatedSeconds === 0) {
-        if (updatedMinutes === 0) {
-          console.log("HEY", updatedMinutes, updatedSeconds)
-          setIsPlaying(false)
-          clearInterval(setInterv)
-          // resetTimer()
-          countdownFinished()
-          // return null
-          // setInterv(clearInterval(interv))
-          // setIsPlaying(false)
-          // soundAlarm()
-          // setTimeout(switchTimer, 5000)
-        } else {
-          updatedMinutes--
-          updatedSeconds += 60
-        }
-      }
-      if (updatedSeconds > 0) {
-        updatedSeconds--
-      }
-      setTimeRemaining(prevState => ({
-        minutes: updatedMinutes,
-        seconds: updatedSeconds
-      }))
-      // console.log(timeRemaining, updatedMinutes, updatedSeconds)
-    // }
-  }
+
+
   // const soundAlarm = () => {
   //   const alarm = new Audio("http://soundbible.com/mp3/Temple%20Bell-SoundBible.com-756181215.mp3")
   //   alarm.play()
   // }
-  // const switchTimer = () => {
-  //   type === "Session" ? setType("Break") : setType("Session")
-  //   let switchMinutes = type === "Session" ? sessionLength : breakLength
-  //   setTimeRemaining({ minutes: switchMinutes, seconds: 0 })
-  //   console.log('hi')
-  // }
+  
+  // document.onload(() => pause())
 
-  const stopTimer = () => {
-    clearInterval(interv)
-    setIsPlaying(false)
-    console.log("pauseTimer -- isPlaying: ", isPlaying)
-  }
-  const resetTimer = () => {
-    console.log("resetTimer")
-    clearInterval(interv)
-    setType("Session")
-    setTimeRemaining({ minutes: sessionLength, seconds: 0 })
-    setIsPlaying(false)
-    console.log(timeRemaining, isPlaying)
-  }
-  const countdownFinished = () => {
-    console.log("countDownFinished")
-    clearInterval(interv)
-    let resetMinutes = type === "Session" ? sessionLength : breakLength
-    setTimeRemaining({ minutes: resetMinutes, seconds: 0 })
-    type === "Session" ? setType("Break") : setType("Session")
-    setIsPlaying(false)
-    console.log(resetMinutes, timeRemaining, isPlaying)
-  }
-  const playPause = () => isPlaying ? stopTimer() : startTimer();
+  const time = `0${minutes}`.slice(-2) + ':' + `0${seconds}`.slice(-2);
 
   return (
-    <div id="pomodoro" style={{ textAlign: 'center' }} >
+    <div id="pomodoro" style={{ textAlign: "center" }}>
       <h1>Pomodoro</h1>
       <Timers breakLength={breakLength} sessionLength={sessionLength} handleChange={changeTime} />
-      <Countdown type={type} timeRemaining={timeRemaining} />
-      <Controls isPlaying={isPlaying} handleReset={resetTimer} handlePlayPause={playPause} />
+      <Countdown>
+        <div id="timer-label">{type}</div>
+        <div id="time-left">{time}</div>
+      </Countdown>
+      <Controls handlePlayPause={playPause} handleRestart={restart} />
       <p>Create by Shaunicles</p>
     </div>
   )
 }
 
-export default App
+const Countdown = styled.div`
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px 0;
+  background: yellow;
+  border: 2px solid purple;
+  border-radius: 20px;
+  text-align: center;
+  & > div {
+    font-size: 1.8em;
+    font-weight: bold;
+  }
+`;
 
-ReactDOM.render(<App />, document.getElementById("root"))
+export default App;
+
+ReactDOM.render(<App />, document.getElementById("root"));
