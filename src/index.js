@@ -107,16 +107,15 @@ function App() {
     setIsPlaying(false)
     console.log(resetMinutes, timeRemaining, isPlaying)
   }
-
   const playPause = () => isPlaying ? stopTimer() : startTimer();
 
   return (
-    <div id="pomodoro">
-      <h1 style={{ textAlign: 'center' }}>Pomodoro</h1>
+    <div id="pomodoro" style={{ textAlign: 'center' }} >
+      <h1>Pomodoro</h1>
       <Timers breakLength={breakLength} sessionLength={sessionLength} handleChange={changeTime} />
       <Countdown type={type} timeRemaining={timeRemaining} />
       <Controls isPlaying={isPlaying} handleReset={resetTimer} handlePlayPause={playPause} />
-      <p style={{ textAlign: 'center' }}>Create by Shaunicles</p>
+      <p>Create by Shaunicles</p>
     </div>
   )
 }

@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 
 function Countdown(props) {
-  let minutes = props.timeRemaining.minutes.toString().padStart(2, "0")
-  let seconds = props.timeRemaining.seconds.toString().padStart(2, "0")
+  const minutes = props.timeRemaining.minutes.toString().padStart(2, "0")
+  const seconds = props.timeRemaining.seconds.toString().padStart(2, "0")
   return (
     <Container>
       <div id="timer-label">{props.type}</div>
@@ -27,4 +27,3 @@ const Container = styled.div`
 `
 
 export default Countdown
-
