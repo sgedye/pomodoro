@@ -1,25 +1,7 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
-import { FaAngleDown, FaAngleUp } from 'react-icons/fa'
-
-const Container = styled.div`
-  padding: 20px 0;
-`
-const Timer = styled.div`
-  display: inline-block;
-  width: 50%;
-  margin: 0 auto;
-  text-align: center;
-  background: lightblue;
-`
-const Selectors = styled.div`
-  width: auto;
-  & > input {
-    text-align: center;
-  }
-
-`
+import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 
 function Timers(props) {
   return (
@@ -53,7 +35,24 @@ function Timers(props) {
         </Selectors>
       </Timer>
     </Container>
-  )
-}
+  );
+};
 
-export default Timers
+const Container = styled.div`
+  padding: 20px 0;
+`
+const Timer = styled.div`
+  display: inline-block;
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+  background: lightblue;
+`
+const Selectors = styled.div`
+  width: auto;
+  & > input {
+    text-align: center;
+  }
+`
+
+export default Timers;

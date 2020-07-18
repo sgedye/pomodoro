@@ -18,6 +18,7 @@ function App() {
 
   // Setting the timer
   const changeTime = id => {
+    console.log('changeTime', id)
     const [type, change] = id.split('-')
     if (type === 'break' && change === 'increment' && breakLength < 60) {
       setBreakLength(breakLength + 1)
@@ -35,21 +36,24 @@ function App() {
   }
   const setTimer = setMinutes => setTimeRemaining({minutes: setMinutes, seconds: 0})
 
-  let updatedMinutes = timeRemaining.minutes, updatedSeconds = timeRemaining.seconds
-
   const startTimer = () => {
     setIsPlaying(true)
-    run()
-    //setInterv(setInterval(run, 100))
+    console.log("startTimer -- isPlaying: ", isPlaying)
+    // run()
+    setInterv(setInterval(run, 100))
   }
   const run = () => {
-    //if (isPlaying) {
+    // if (isPlaying) {
+      let updatedMinutes = timeRemaining.minutes
+      let updatedSeconds = timeRemaining.seconds
       console.log("runTimer")
       if (updatedSeconds === 0) {
         if (updatedMinutes === 0) {
+          console.log("HEY", updatedMinutes, updatedSeconds)
           setIsPlaying(false)
-          clearInterval(interv)
-          resetTimer()
+          clearInterval(setInterv)
+          // resetTimer()
+          countdownFinished()
           // return null
           // setInterv(clearInterval(interv))
           // setIsPlaying(false)
@@ -63,36 +67,48 @@ function App() {
       if (updatedSeconds > 0) {
         updatedSeconds--
       }
-      return setTimeRemaining({ minutes: updatedMinutes, seconds: updatedSeconds })
-    //}
+      setTimeRemaining(prevState => ({
+        minutes: updatedMinutes,
+        seconds: updatedSeconds
+      }))
+      // console.log(timeRemaining, updatedMinutes, updatedSeconds)
+    // }
   }
-  const soundAlarm = () => {
-    const alarm = new Audio("http://soundbible.com/mp3/Temple%20Bell-SoundBible.com-756181215.mp3")
-    alarm.play()
-  }
-  const switchTimer = () => {
-    type === "Session" ? setType("Break") : setType("Session")
-    let switchMinutes = type === "Session" ? sessionLength : breakLength
-    setTimeRemaining({ minutes: switchMinutes, seconds: 0 })
-    console.log('hi')
+  // const soundAlarm = () => {
+  //   const alarm = new Audio("http://soundbible.com/mp3/Temple%20Bell-SoundBible.com-756181215.mp3")
+  //   alarm.play()
+  // }
+  // const switchTimer = () => {
+  //   type === "Session" ? setType("Break") : setType("Session")
+  //   let switchMinutes = type === "Session" ? sessionLength : breakLength
+  //   setTimeRemaining({ minutes: switchMinutes, seconds: 0 })
+  //   console.log('hi')
+  // }
 
-  }
   const stopTimer = () => {
-    console.log("pauseTimer")
-    setIsPlaying(false)
     clearInterval(interv)
+    setIsPlaying(false)
+    console.log("pauseTimer -- isPlaying: ", isPlaying)
   }
   const resetTimer = () => {
     console.log("resetTimer")
     clearInterval(interv)
-    let resetMinutes = (type === 'Session') ? sessionLength : breakLength
-    setTimeRemaining({minutes: resetMinutes, seconds: 0})
+    setType("Session")
+    setTimeRemaining({ minutes: sessionLength, seconds: 0 })
+    setIsPlaying(false)
+    console.log(timeRemaining, isPlaying)
+  }
+  const countdownFinished = () => {
+    console.log("countDownFinished")
+    clearInterval(interv)
+    let resetMinutes = type === "Session" ? sessionLength : breakLength
+    setTimeRemaining({ minutes: resetMinutes, seconds: 0 })
+    type === "Session" ? setType("Break") : setType("Session")
     setIsPlaying(false)
     console.log(resetMinutes, timeRemaining, isPlaying)
   }
-  const playPause = () => {
-    isPlaying ? stopTimer() : startTimer()
-  }
+
+  const playPause = () => isPlaying ? stopTimer() : startTimer();
 
   return (
     <div id="pomodoro">
