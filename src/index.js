@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
-import styled from 'styled-components'
 
 import './index.css'
 
@@ -8,12 +7,6 @@ import Timers from './Components/Timers'
 import Countdown from './Components/Countdown'
 import Controls from './Components/Controls'
 
-const Title = styled.h1`
-  text-align: center;
-`
-const Footer = styled.p`
-  text-align: center;
-`
 
 function App() {
   const [ type, setType] = useState('Session')   /* use setType when timer (timeRemaining === zero) */
@@ -103,11 +96,11 @@ function App() {
 
   return (
     <div id="pomodoro">
-      <Title>Pomodoro</Title>
+      <h1 style={{ textAlign: 'center' }}>Pomodoro</h1>
       <Timers breakLength={breakLength} sessionLength={sessionLength} handleChange={changeTime} />
       <Countdown type={type} timeRemaining={timeRemaining} />
       <Controls isPlaying={isPlaying} handleReset={resetTimer} handlePlayPause={playPause} />
-      <Footer>Create by Shaunicles</Footer>
+      <p style={{ textAlign: 'center' }}>Create by Shaunicles</p>
     </div>
   )
 }
