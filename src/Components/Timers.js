@@ -7,7 +7,7 @@ function Timers(props) {
   return (
     <Container>
       <Timer id="break-timer">
-        <label id="break-label">Break Length</label>
+        <label id="break-label">Break Time</label>
         <Selectors>
           <FaAngleDown
             id="break-decrement"
@@ -21,7 +21,7 @@ function Timers(props) {
         </Selectors>
       </Timer>
       <Timer id="session-timer">
-        <label id="session-label">Session Length</label>
+        <label id="session-label">Session Time</label>
         <Selectors>
           <FaAngleDown
             id="session-decrement"
@@ -39,19 +39,34 @@ function Timers(props) {
 };
 
 const Container = styled.div`
-  padding: 20px 0;
+  font-size: 1.2em;
 `
 const Timer = styled.div`
   display: inline-block;
-  width: 50%;
-  margin: 0 auto;
-  text-align: center;
-  background: lightblue;
+  margin: 20px 5px;
+  padding: 20px 10px;
+  min-width: 125px;
+  label {
+    display: inline-block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    text-shadow: -1px -1px 10px white, 1px 1px 2px white;
+  }
+  svg {
+    font-size: 1.4em;
+  }
 `
 const Selectors = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: auto;
-  & > input {
+  input {
     text-align: center;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 0 3px;
   }
 `
 

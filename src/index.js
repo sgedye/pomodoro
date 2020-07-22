@@ -4,8 +4,8 @@ import styled from "styled-components"
 
 import './index.css'
 
-import Timers from './Components/Timers'
-import Controls from './Components/Controls'
+import Timers from './components/Timers'
+import Controls from './components/Controls'
 
 function App() {
   const timerMax = 3600;
@@ -23,7 +23,6 @@ function App() {
 
   useEffect(() => {
     if (secondsLeft === 0) {
-      // document.getElementById('alarm-sound').play()
       audioRef.current.play()
     }
     if (secondsLeft < 0) {
@@ -77,17 +76,17 @@ function App() {
   const time = `0${minutes}`.slice(-2) + ":" + `0${seconds}`.slice(-2)
   console.log("%c type|time: ", "color: purple; font-weight: bold;", type, time)
   return (
-    <div id="pomodoro" style={{ textAlign: "center" }}>
-      <h1>Pomodoro</h1>
+    <div id="pomodoro">
+      <Heading>Pomodoro Timer</Heading>
       <Timers
         breakLength={breakLength / 60}
         sessionLength={sessionLength / 60}
         handleChange={changeTime}
       />
-      <Countdown>
+      <div id="countdown">
         <div id="timer-label">{type}</div>
         <div id="time-left">{time}</div>
-      </Countdown>
+      </div>
       <Controls
         isPlaying={isPlaying}
         handleReset={resetTimer}
@@ -96,23 +95,13 @@ function App() {
       <audio id="alarm-sound" ref={audioRef} src="http://soundbible.com/mp3/Temple%20Bell-SoundBible.com-756181215.mp3">
         Your browser does not support the <code>audio</code> element.
       </audio>
-      <p>Created by Shaunicles</p>
     </div>
   )
 }
-const Countdown = styled.div`
-  width: 80%;
-  margin: 0 auto;
-  padding: 20px 0;
-  background: yellow;
-  border: 2px solid purple;
-  border-radius: 20px;
-  text-align: center;
-  & > div {
-    font-size: 1.8em;
-    font-weight: bold;
-  }
-`
+
+const Heading = styled.h1`
+  text-shadow: -1px -1px 5px white, 1px 1px 1px white;
+`;
 
 export default App
 
