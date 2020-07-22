@@ -5,21 +5,53 @@
 }
 
 #root {
-  display: grid;
+  display: flex;
+  justify-content: center;
   align-items: center;
-  /* height: 100vh; */
+  height: 100vh;
+  background-image: url('./images/food-2027563_1280.png');
+  background-size: 600px;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 #pomodoro {
-  width: 320px;
-  margin: 0 auto;
-  padding: 20px;
+  width: 100vw;
+  padding: 125px 20px 0 20px;
   text-align: center;
-  vertical-align: auto;
-  background-color: plum;
 }
 
+#session-timer, #break-timer, #countdown {
+  background: #f67676;
+  border: 1px solid white;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0px 0px 10px 5px red, inset 0 0 10px 0px white;
+}
+
+#countdown {
+  width: 80%;
+  max-width: 300px;
+  margin: 0 auto 15px;
+  padding: 20px 0;
+}
+
+#countdown > div {
+  font-size: 1.8em;
+  font-weight: bold;
+  text-shadow: -1px -1px 10px white, 1px 1px white;
+}
+
+
+#controls {
+  margin-top: 25px;
+}
 #start_stop {
   display: inline-block;
   padding: 10px 15px;
+}
+
+svg {
+  -webkit-filter: drop-shadow(-1px -1px 1px white);
+  filter: drop-shadow(-1px -1px 1px white);
 }
