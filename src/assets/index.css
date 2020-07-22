@@ -9,7 +9,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-image: url('./images/food-2027563_1280.png');
+  background-image: url('./tomato.png');
   background-size: 600px;
   background-repeat: no-repeat;
   background-position: center center;
@@ -19,6 +19,10 @@
   width: 100vw;
   padding: 125px 20px 0 20px;
   text-align: center;
+}
+
+#pomodoro > h1 {
+  text-shadow: -1px -1px 5px white, 1px 1px 1px white;
 }
 
 #session-timer, #break-timer, #countdown {
@@ -42,10 +46,10 @@
   text-shadow: -1px -1px 10px white, 1px 1px white;
 }
 
-
 #controls {
   margin-top: 25px;
 }
+
 #start_stop {
   display: inline-block;
   padding: 10px 15px;

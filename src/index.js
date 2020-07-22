@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
-import styled from "styled-components"
 
-import './index.css'
-
+import './assets/index.css'
 import Timers from './components/Timers'
 import Controls from './components/Controls'
+import templeBell from './assets/temple-bell.mp3'
 
 function App() {
   const timerMax = 3600;
@@ -77,7 +76,7 @@ function App() {
   console.log("%c type|time: ", "color: purple; font-weight: bold;", type, time)
   return (
     <div id="pomodoro">
-      <Heading>Pomodoro Timer</Heading>
+      <h1>Pomodoro Timer</h1>
       <Timers
         breakLength={breakLength / 60}
         sessionLength={sessionLength / 60}
@@ -92,16 +91,12 @@ function App() {
         handleReset={resetTimer}
         handlePlayPause={playPause}
       />
-      <audio id="alarm-sound" ref={audioRef} src="http://soundbible.com/mp3/Temple%20Bell-SoundBible.com-756181215.mp3">
+      <audio id="alarm-sound" ref={audioRef} src={templeBell}>
         Your browser does not support the <code>audio</code> element.
       </audio>
     </div>
   )
 }
-
-const Heading = styled.h1`
-  text-shadow: -1px -1px 5px white, 1px 1px 1px white;
-`;
 
 export default App
 
