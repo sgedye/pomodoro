@@ -6,6 +6,12 @@ import Timers from './components/Timers'
 import Controls from './components/Controls'
 import templeBell from './assets/temple-bell.mp3'
 
+
+// Reimplement this using momentJS -
+// To prevent drift from the set timeout method
+// Basically ensure that 1000ms *is* 1000ms
+
+
 function App() {
   const timerMax = 3600;
   const timerMin = 60;
