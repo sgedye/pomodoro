@@ -1,69 +1,83 @@
-import React, { useState, useEffect, useRef } from 'react'
-import ReactDOM from 'react-dom'
+import { useState, useEffect, useRef } from "react";
+import ReactDOM from "react-dom";
 
-import './assets/index.css'
-import Timers from './components/Timers'
-import Controls from './components/Controls'
-import templeBell from './assets/temple-bell.mp3'
+import { Timers, Controls } from "./components";
 
+import "./assets/index.css";
+import templeBell from "./assets/temple-bell.mp3";
 
-// Reimplement this using momentJS -
-// To prevent drift from the set timeout method
+// Reimplement this using momentJS/dateJS -
+// To prevent drift don't use the set timeout method
 // Basically ensure that 1000ms *is* 1000ms
 
+// Use Date.now() rather than setInterval
 
-function App() {
-  const timerMax = 3600;
-  const timerMin = 60;
-  const defaultBreak = 300;
-  const defaultSession = 1500;
-  const [type, setType] = useState("Session")
-  const [breakLength, setBreakLength] = useState(defaultBreak)
-  const [sessionLength, setSessionLength] = useState(defaultSession)
-  const [interv, setInterv] = useState()
-  const [secondsLeft, setSecondsLeft] = useState(defaultSession)
-  const [isPlaying, setIsPlaying] = useState(false)
+const timerMax = 3600;
+const timerMin = 60;
+const defaultBreak = 300;
+const defaultSession = 1500;
+
+export const App = () => {
+  const [type, setType] = useState("Session");
+  const [breakLength, setBreakLength] = useState(defaultBreak);
+  const [sessionLength, setSessionLength] = useState(defaultSession);
+  const [interv, setInterv] = useState();
+  const [secondsLeft, setSecondsLeft] = useState(defaultSession);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const audioRef = useRef(null);
 
   useEffect(() => {
+    console.log(Date.now());
     if (secondsLeft === 0) {
-      audioRef.current.play()
+      audioRef.current.play();
     }
-    if (secondsLeft < 0) {
+    if (secondsLeft <= 0) {
       if (type === "Session") {
-        setSecondsLeft(() => breakLength);
-        setType(() => "Break")
+        setSecondsLeft(breakLength);
+        setType(() => "Break");
       } else {
-        setSecondsLeft(() => sessionLength)
-        setType(() => "Session")
+        setSecondsLeft(sessionLength);
+        setType(() => "Session");
       }
     }
-  }, [secondsLeft, sessionLength, breakLength, type])
+  }, [secondsLeft, sessionLength, breakLength, type]);
 
-  const changeTime = id => {
-    const [type, change] = id.split("-")
+  const changeTime = (id) => {
+    const [type, change] = id.split("-");
     if (type === "break" && change === "increment" && breakLength < timerMax) {
-      setBreakLength(breakLength => breakLength + 60)
-    } else if (type === "break" && change === "decrement" && breakLength > timerMin) {
-      setBreakLength(breakLength => breakLength - 60)
-    } else if (type === "session" && change === "increment" && sessionLength < timerMax) {
-      setSessionLength(sessionLength => sessionLength + 60)
-      setSecondsLeft(sessionLength => sessionLength + 60)
-    } else if (type === "session" && change === "decrement" && sessionLength > timerMin) {
-      setSessionLength(sessionLength => sessionLength - 60)
-      setSecondsLeft(sessionLength => sessionLength - 60)
+      setBreakLength((breakLength) => breakLength + 60);
+    } else if (
+      type === "break" &&
+      change === "decrement" &&
+      breakLength > timerMin
+    ) {
+      setBreakLength((breakLength) => breakLength - 60);
+    } else if (
+      type === "session" &&
+      change === "increment" &&
+      sessionLength < timerMax
+    ) {
+      setSessionLength((sessionLength) => sessionLength + 60);
+      setSecondsLeft((sessionLength) => sessionLength + 60);
+    } else if (
+      type === "session" &&
+      change === "decrement" &&
+      sessionLength > timerMin
+    ) {
+      setSessionLength((sessionLength) => sessionLength - 60);
+      setSecondsLeft((sessionLength) => sessionLength - 60);
     }
-  }
+  };
   const startTimer = () => {
-    setIsPlaying(() => true)
-    setInterv(() => setInterval(run, 1000))
-  }
-  const run = () => setSecondsLeft(secondsLeft => secondsLeft - 1);
+    setIsPlaying(() => true);
+    setInterv(() => setInterval(run, 1000));
+  };
+  const run = () => setSecondsLeft((secondsLeft) => secondsLeft - 1);
   const stopTimer = () => {
-    clearInterval(interv)
-    setIsPlaying(() => false)
-  }
+    clearInterval(interv);
+    setIsPlaying(() => false);
+  };
   const resetTimer = () => {
     audioRef.current.pause();
     audioRef.current.currentTime = 0;
@@ -73,13 +87,19 @@ function App() {
     setBreakLength(() => defaultBreak);
     setSessionLength(() => defaultSession);
     setSecondsLeft(() => defaultSession);
-  }
-  const playPause = () => (isPlaying ? stopTimer() : startTimer())
+  };
+  const playPause = () => (isPlaying ? stopTimer() : startTimer());
 
-  const minutes = Math.floor(secondsLeft / 60)
-  const seconds = secondsLeft - minutes * 60
-  const time = `0${minutes}`.slice(-2) + ":" + `0${seconds}`.slice(-2)
-  console.log("%c type|time: ", "color: purple; font-weight: bold;", type, time)
+  const minutes = Math.floor(secondsLeft / 60);
+  const seconds = secondsLeft - minutes * 60;
+  const time = `0${minutes}`.slice(-2) + ":" + `0${seconds}`.slice(-2);
+  console.log(
+    "%c type|time: ",
+    "color: purple; font-weight: bold;",
+    type,
+    time
+  );
+
   return (
     <div id="pomodoro">
       <h1>Pomodoro Timer</h1>
@@ -97,13 +117,11 @@ function App() {
         handleReset={resetTimer}
         handlePlayPause={playPause}
       />
-      <audio id="alarm-sound" ref={audioRef} src={templeBell}>
+      {/* <audio id="alarm-sound" ref={audioRef} src={templeBell}>
         Your browser does not support the <code>audio</code> element.
-      </audio>
+      </audio> */}
     </div>
-  )
-}
+  );
+};
 
-export default App
-
-ReactDOM.render(<App />, document.getElementById("root"))
+ReactDOM.render(<App />, document.getElementById("root"));
