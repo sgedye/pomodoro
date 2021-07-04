@@ -25,7 +25,6 @@ export const App = () => {
 
   const changeTime = (id) => {
     if (!isPlaying) {
-      console.log(id, type, secondsLeft);
       switch (id) {
         case "break-increment":
           type === "break" &&
