@@ -4,73 +4,97 @@ import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 
 export const Timers = ({ breakLength, sessionLength, handleChange }) => {
   return (
-    <Container>
+    <TimerWrapper>
       <Timer id="break-timer">
         <label id="break-label">Break Time</label>
         <Selectors>
-          <button
+          <ButtonDown
             id="break-decrement"
             onClick={() => handleChange("break-decrement")}
           >
             <FaAngleDown />
-          </button>
+          </ButtonDown>
           <input
             id="break-length"
             type="text"
             size="2"
             value={breakLength}
-            readOnly
+            disabled
           />
-          <button
+          <ButtonUp
             id="break-increment"
             onClick={() => handleChange("break-increment")}
           >
             <FaAngleUp />
-          </button>
+          </ButtonUp>
         </Selectors>
       </Timer>
       <Timer id="session-timer">
         <label id="session-label">Session Time</label>
         <Selectors>
-          <button
+          <ButtonDown
             id="session-decrement"
             onClick={() => handleChange("session-decrement")}
           >
             <FaAngleDown />
-          </button>
+          </ButtonDown>
           <input
             id="session-length"
             type="text"
             size="2"
             value={sessionLength}
-            readOnly
+            disabled
           />
-          <button
+          <ButtonUp
             id="session-increment"
             onClick={() => handleChange("session-increment")}
           >
             <FaAngleUp />
-          </button>
+          </ButtonUp>
         </Selectors>
       </Timer>
-    </Container>
+    </TimerWrapper>
   );
 };
 
-const Container = styled.div`
+const TimerWrapper = styled.div`
+  width: 300px;
+  margin: 20px auto;
   font-size: 1.2em;
+  display: flex;
 `;
 
 const Timer = styled.div`
   display: inline-block;
-  margin: 20px 5px;
   padding: 20px 10px;
-  min-width: 125px;
+  width: 50%;
+
+  input {
+    font-size: 1rem;
+    color: black;
+    background-color: white;
+  }
   label {
+    font-size: 1.25rem;
     display: inline-block;
-    margin-bottom: 10px;
-    font-weight: 500;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
     text-shadow: -1px -1px 10px white, 1px 1px 2px white;
+  }
+  &:first-of-type {
+    margin-right: 1rem;
+  }
+`;
+
+const ButtonDown = styled.button`
+  &:active {
+    transform: translateY(1px);
+  }
+`;
+
+const ButtonUp = styled.button`
+  &:active {
+    transform: translateY(-1px);
   }
 `;
 
