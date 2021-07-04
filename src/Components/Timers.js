@@ -1,61 +1,103 @@
-import React from 'react';
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
+import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 
-function Timers(props) {
+export const Timers = ({ breakLength, sessionLength, handleChange }) => {
   return (
-    <Container>
+    <TimerWrapper>
       <Timer id="break-timer">
         <label id="break-label">Break Time</label>
         <Selectors>
-          <FaAngleDown
+          <ButtonDown
             id="break-decrement"
-            onClick={() => props.handleChange("break-decrement")}
+            onClick={() => handleChange("break-decrement")}
+          >
+            <FaAngleDown />
+          </ButtonDown>
+          <input
+            id="break-length"
+            type="text"
+            size="2"
+            value={breakLength}
+            disabled
           />
-          <input id="break-length" type="text" size="2" value={props.breakLength} readOnly />
-          <FaAngleUp
+          <ButtonUp
             id="break-increment"
-            onClick={() => props.handleChange("break-increment")}
-          />
+            onClick={() => handleChange("break-increment")}
+          >
+            <FaAngleUp />
+          </ButtonUp>
         </Selectors>
       </Timer>
       <Timer id="session-timer">
         <label id="session-label">Session Time</label>
         <Selectors>
-          <FaAngleDown
+          <ButtonDown
             id="session-decrement"
-            onClick={() => props.handleChange("session-decrement")}
+            onClick={() => handleChange("session-decrement")}
+          >
+            <FaAngleDown />
+          </ButtonDown>
+          <input
+            id="session-length"
+            type="text"
+            size="2"
+            value={sessionLength}
+            disabled
           />
-          <input id="session-length" type="text" size="2" value={props.sessionLength} readOnly />
-          <FaAngleUp
+          <ButtonUp
             id="session-increment"
-            onClick={() => props.handleChange("session-increment")}
-          />
+            onClick={() => handleChange("session-increment")}
+          >
+            <FaAngleUp />
+          </ButtonUp>
         </Selectors>
       </Timer>
-    </Container>
+    </TimerWrapper>
   );
 };
 
-const Container = styled.div`
+const TimerWrapper = styled.div`
+  width: 300px;
+  margin: 20px auto;
   font-size: 1.2em;
-`
+  display: flex;
+`;
+
 const Timer = styled.div`
   display: inline-block;
-  margin: 20px 5px;
   padding: 20px 10px;
-  min-width: 125px;
+  width: 50%;
+
+  input {
+    font-size: 1rem;
+    color: black;
+    background-color: white;
+  }
   label {
+    font-size: 1.25rem;
     display: inline-block;
-    margin-bottom: 10px;
-    font-weight: 500;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
     text-shadow: -1px -1px 10px white, 1px 1px 2px white;
   }
-  svg {
-    font-size: 1.4em;
+  &:first-of-type {
+    margin-right: 1rem;
   }
-`
+`;
+
+const ButtonDown = styled.button`
+  &:active {
+    transform: translateY(1px);
+  }
+`;
+
+const ButtonUp = styled.button`
+  &:active {
+    transform: translateY(-1px);
+  }
+`;
+
 const Selectors = styled.div`
   display: flex;
   justify-content: center;
@@ -68,6 +110,10 @@ const Selectors = styled.div`
     padding: 5px;
     margin: 0 3px;
   }
-`
-
-export default Timers;
+  button {
+    border: 0;
+    background-color: transparent;
+    font-size: 1.8rem;
+    display: flex;
+  }
+`;

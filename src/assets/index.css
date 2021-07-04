@@ -9,7 +9,7 @@
   justify-content: center;
   align-items: center;
   height: 90vh;
-  background-image: url('./tomato.png');
+  background-image: url("./tomato.png");
   background-size: 600px;
   background-repeat: no-repeat;
   background-position: center center;
@@ -17,7 +17,7 @@
 
 #pomodoro {
   width: 100vw;
-  padding: 125px 20px 0 20px;
+  padding: 125px 0 0;
   text-align: center;
 }
 
@@ -25,7 +25,9 @@
   text-shadow: -1px -1px 5px white, 1px 1px 1px white;
 }
 
-#session-timer, #break-timer, #countdown {
+#session-timer,
+#break-timer,
+#countdown {
   background: #f67676;
   border: 1px solid white;
   border-radius: 20px;
@@ -34,7 +36,6 @@
 }
 
 #countdown {
-  width: 80%;
   max-width: 300px;
   margin: 0 auto 15px;
   padding: 20px 0;
@@ -48,11 +49,6 @@
 
 #controls {
   margin-top: 25px;
-}
-
-#start_stop {
-  display: inline-block;
-  padding: 10px 15px;
 }
 
 svg {
